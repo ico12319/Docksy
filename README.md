@@ -30,6 +30,18 @@ Kubernetes features look for `kubectl` on the app's PATH and in `/opt/homebrew/b
 
 ## Build and launch
 
+### Guided setup with Codex or Claude
+
+Clone this repository and open it in a local Codex or Claude Code session with filesystem and terminal access. Give the assistant this prompt:
+
+> Read `skills/docksy-setup/SKILL.md` and follow it to set up and launch Docksy on my Mac. Ask me for any missing Kubernetes or database details, and preserve my existing settings.
+
+The [setup skill](skills/docksy-setup/SKILL.md) checks prerequisites, asks which features you want, helps configure your kubeconfig and database targets, validates the settings, and builds or reuses the app before launching it. It uses your existing cluster credentials; it does not ask for database passwords. It also accounts for active tunnels before rebuilding or restarting.
+
+This prompt works by having the assistant read the skill directly; no global skill installation is required. Launch-only requests reuse an existing app. The assistant still needs your answers and any permissions required by its environment. If it cannot access your Mac, it can guide you through the manual steps instead.
+
+### Manual setup
+
 From the project directory:
 
 ```sh
@@ -198,10 +210,13 @@ Restarting stops an active database tunnel, so finish or stop the connection fir
 | `Tests/` | Isolated unit checks |
 | `assets/` | Mascot images, generation prompts, app metadata, and terminal scripts |
 | `examples/config.json` | Shareable example settings |
+| `skills/docksy-setup/` | Guided agent setup and a configuration checker using the app's validation rules |
 | `dist/` | Built application bundle; excluded from source control |
 | `.build/` | Compiler output and local build artifacts; excluded from source control |
 
 Run `zsh test.sh` for unit checks covering configuration, context parsing, literal command arguments, pod selection, forward lifecycle/readiness, an in-process pipe, session parsing, geometry, artwork, and favourite links. The checks never launch kubectl, switch contexts, open websites, or access a cluster or database. No integration or end-to-end tests are included.
+
+For the setup skill's configuration helper, run `zsh skills/docksy-setup/scripts/test-check-config.sh`. It compiles the configuration model and uses temporary files to check valid settings, invalid ports, missing files, paths with spaces, and preservation of the candidate files. It does not launch the app or access Kubernetes.
 
 ## Privacy and sharing
 
