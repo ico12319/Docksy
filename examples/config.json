@@ -1,0 +1,19 @@
+{
+  "databaseTargets": [
+    {
+      "name": "PostgreSQL",
+      "namespace": "default",
+      "resource": "service/postgres",
+      "localPort": 5432,
+      "remotePort": 5432
+    },
+    {
+      "name": "MySQL development",
+      "context": "my-dev-cluster",
+      "namespace": "databases",
+      "resource": "service/mysql",
+      "localPort": 3307,
+      "remotePort": 3306
+    }
+  ]
+}
